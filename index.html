@@ -1772,13 +1772,43 @@ function myFunction() {
   tr = table.getElementsByTagName("tr");
   for (i = 0; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[1];
+    td2= tr[i].getElementsByTagName("td")[2];
+    td3= tr[i].getElementsByTagName("td")[3];
+    td4= tr[i].getElementsByTagName("td")[4];
+    td11= tr[i].getElementsByTagName("td")[11];
+    td13= tr[i].getElementsByTagName("td")[13];  
+      
+    console.log("td length", tr[i].getElementsByTagName("td").length);
+    
+    if(td13){
+        txtValue = td13.textContent || td13.innerText;
+        concat=concat+txtValue;
+    }
+    if(td11){
+        txtValue = td11.textContent || td11.innerText;
+        concat=concat+txtValue;
+    }  
+    if(td4){
+        txtValue = td4.textContent || td4.innerText;
+        concat=concat+txtValue;
+    }
+    if(td3){
+        txtValue = td3.textContent || td3.innerText;
+        concat=concat+txtValue;
+    }
+    if(td2){
+        txtValue = td2.textContent || td2.innerText;
+        concat=concat+txtValue;
+    }
     if(td){
         txtValue = td.textContent || td.innerText;
         concat=concat+txtValue;
     }
+    
       
     //console.log(td);
-    if (td) {
+    
+    /*if (td) {
       txtValue = td.textContent || td.innerText;
       if (txtValue.toUpperCase().indexOf(filter) > -1) {
         tr[i].style.display = "";
@@ -1787,7 +1817,19 @@ function myFunction() {
       } else {
         tr[i].style.display = "none";
       }
+    }*/
+    
+    if (concat) {
+      txtValue = concat;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+        console.log(txtValue);
+          
+      } else {
+        tr[i].style.display = "none";
+      }
     }
+      concat="";
     
   }
 }
