@@ -1,5 +1,4 @@
-https://next.json-generator.com/NJuiXGdOY
-
+https://next.json-generator.com/4kofurO_K
 [
   {
     'repeat(100,100)':{
@@ -51,9 +50,12 @@ https://next.json-generator.com/NJuiXGdOY
       benchmark_score(tags) {
         const benchmark_score = ['1', '10', '100','50','500','30','75'];
         return benchmark_score[tags.integer(0, benchmark_score.length - 1)];
-      }
+      },
+      template(tags) {
+        const template = ['terraform.png', 'ansible.png', 'docker-compose.png','helm.png','vagrant.png'];
+        return template[tags.integer(0, template.length - 1)];
+      },
+      
 }
   }
 ]
-
-
