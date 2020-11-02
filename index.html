@@ -1,0 +1,1798 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+    img{
+        width: 75px;
+        height: 75px;
+    }
+#myInput {
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+#myTable {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #ddd;
+  font-size: 18px;
+}
+
+#myTable th, #myTable td {
+  text-align: left;
+  padding: 12px;
+}
+
+#myTable tr {
+  border-bottom: 1px solid #ddd;
+}
+
+#myTable tr.header, #myTable tr:hover {
+  background-color: #f1f1f1;
+}
+</style>
+</head>
+<body>
+
+<h2>Clouderate BenchOps</h2>
+
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for cloud.." title="Type in a name">
+
+<p id='showData'></p>
+<!--table id="myTable">
+  <tr class="header">
+    <th >Name</th>
+    <th >Country</th>
+    <th >date</th>
+      
+  </tr>
+  <tr>
+    <td>Alfreds Futterkiste</td>
+    <td>Germany</td>
+    <td>Germany</td>
+      
+  </tr>
+  <tr>
+    <td>Berglunds snabbkop</td>
+    <td>Sweden</td>
+    <td>Germany</td>
+  </tr>
+  <tr>
+    <td>Island Trading</td>
+    <td>UK</td>
+  </tr>
+  <tr>
+    <td>Koniglich Essen</td>
+    <td>Germany</td>
+    <td>Germany</td>
+  </tr>
+  <tr>
+    <td>Laughing Bacchus Winecellars</td>
+    <td>Canada</td>
+    <td>Germany</td>
+  </tr>
+  <tr>
+    <td>Magazzini Alimentari Riuniti</td>
+    <td>Italy</td>
+    <td>Germany</td>
+  </tr>
+  <tr>
+    <td>North/South</td>
+    <td>UK</td>
+    <td>Germany</td>
+  </tr>
+  <tr>
+    <td>Paris specialites</td>
+    <td>France</td>
+    <td>Germany</td>
+  </tr>
+</table-->
+
+<script>
+function tableFromJson() {
+		// the json data. (you can change the values for output.)
+        /*var myBooks = [
+            {'Book ID': '1', 'Book Name': 'Challenging Times',
+                'Category': 'Business', 'Price': '125.60'
+            },
+            {'Book ID': '2', 'Book Name': 'Learning JavaScript',
+                'Category': 'Programming', 'Price': '56.00'
+            },
+            {'Book ID': '3', 'Book Name': 'Popular Science',
+                'Category': 'Science', 'Price': '210.40'
+            }
+        ]*/
+        var myBooks=[
+  {
+    "_id": 0,
+    "cloud": "msft.png",
+    "xpu": "gpu",
+    "region": "apac-sydney",
+    "instance": "a1.xlarge",
+    "cost": "$500",
+    "containers": "500",
+    "images_per_second": "1",
+    "storage": "do-blob",
+    "simultaneous_connections": "100",
+    "latency": "100",
+    "benchmark": "aibench",
+    "benchmark_score": "1",
+    "template": "docker-compose.png"
+  },
+  {
+    "_id": 1,
+    "cloud": "msft.png",
+    "xpu": "gpu",
+    "region": "apac-singapore",
+    "instance": "cg1.xlarge",
+    "cost": "$50",
+    "containers": "20",
+    "images_per_second": "1",
+    "storage": "vultr-blob",
+    "simultaneous_connections": "5",
+    "latency": "5",
+    "benchmark": "mlbench",
+    "benchmark_score": "75",
+    "template": "docker-compose.png"
+  },
+  {
+    "_id": 2,
+    "cloud": "packet.png",
+    "xpu": "tpu",
+    "region": "us-west-1",
+    "instance": "a1.xlarge",
+    "cost": "$500",
+    "containers": 500,
+    "images_per_second": 500,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 500,
+    "latency": 10,
+    "benchmark": "hammer-db",
+    "benchmark_score": 30,
+    "template": "helm.png"
+  },
+  {
+    "_id": 3,
+    "cloud": "do.png",
+    "xpu": "cpu",
+    "region": "us-west-1",
+    "instance": "m3.xlarge",
+    "cost": "$500",
+    "containers": 15,
+    "images_per_second": 50,
+    "storage": "aws-s3",
+    "simultaneous_connections": 5,
+    "latency": 1,
+    "benchmark": "ecommerce",
+    "benchmark_score": 30,
+    "template": "helm.png"
+  },
+  {
+    "_id": 4,
+    "cloud": "packet.png",
+    "xpu": "cpu",
+    "region": "apac-singapore",
+    "instance": "cg1.xlarge",
+    "cost": "$1",
+    "containers": 20,
+    "images_per_second": 500,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 500,
+    "latency": 100,
+    "benchmark": "iometer",
+    "benchmark_score": 10,
+    "template": "docker-compose.png"
+  },
+  {
+    "_id": 5,
+    "cloud": "vultr.png",
+    "xpu": "qpu",
+    "region": "us-east-2",
+    "instance": "cg1.xlarge",
+    "cost": "$10",
+    "containers": 15,
+    "images_per_second": 100,
+    "storage": "aws-s3",
+    "simultaneous_connections": 1,
+    "latency": 100,
+    "benchmark": "hammer-db",
+    "benchmark_score": 75,
+    "template": "helm.png"
+  },
+  {
+    "_id": 6,
+    "cloud": "goog.png",
+    "xpu": "qpu",
+    "region": "us-west-1",
+    "instance": "a1.xlarge",
+    "cost": "$100",
+    "containers": 20,
+    "images_per_second": 100,
+    "storage": "aws-s3",
+    "simultaneous_connections": 500,
+    "latency": 100,
+    "benchmark": "iometer",
+    "benchmark_score": 75,
+    "template": "vagrant.png"
+  },
+  {
+    "_id": 7,
+    "cloud": "aws.png",
+    "xpu": "tpu",
+    "region": "apac-singapore",
+    "instance": "p3.16xlarge",
+    "cost": "$5",
+    "containers": 500,
+    "images_per_second": 1,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 100,
+    "latency": 1,
+    "benchmark": "ecommerce",
+    "benchmark_score": 75,
+    "template": "helm.png"
+  },
+  {
+    "_id": 8,
+    "cloud": "goog.png",
+    "xpu": "gpu",
+    "region": "apac-singapore",
+    "instance": "p3.16xlarge",
+    "cost": "$100",
+    "containers": 200,
+    "images_per_second": 10,
+    "storage": "do-blob",
+    "simultaneous_connections": 100,
+    "latency": 50,
+    "benchmark": "aibench",
+    "benchmark_score": 10,
+    "template": "ansible.png"
+  },
+  {
+    "_id": 9,
+    "cloud": "goog.png",
+    "xpu": "qpu",
+    "region": "apac-sydney",
+    "instance": "p3.16xlarge",
+    "cost": "$500",
+    "containers": 20,
+    "images_per_second": 50,
+    "storage": "vultr-blob",
+    "simultaneous_connections": 10,
+    "latency": 100,
+    "benchmark": "mlbench",
+    "benchmark_score": 1,
+    "template": "ansible.png"
+  },
+  {
+    "_id": 10,
+    "cloud": "msft.png",
+    "xpu": "tpu",
+    "region": "apac-sydney",
+    "instance": "i3.small",
+    "cost": "$100",
+    "containers": 20,
+    "images_per_second": 1,
+    "storage": "do-blob",
+    "simultaneous_connections": 5,
+    "latency": 500,
+    "benchmark": "aibench",
+    "benchmark_score": 1,
+    "template": "docker-compose.png"
+  },
+  {
+    "_id": 11,
+    "cloud": "packet.png",
+    "xpu": "qpu",
+    "region": "europe-milan",
+    "instance": "i3.small",
+    "cost": "$1",
+    "containers": 15,
+    "images_per_second": 50,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 5,
+    "latency": 50,
+    "benchmark": "spec-cloud",
+    "benchmark_score": 500,
+    "template": "docker-compose.png"
+  },
+  {
+    "_id": 12,
+    "cloud": "do.png",
+    "xpu": "qpu",
+    "region": "europe-milan",
+    "instance": "m3.xlarge",
+    "cost": "$10",
+    "containers": 15,
+    "images_per_second": 1,
+    "storage": "do-blob",
+    "simultaneous_connections": 1,
+    "latency": 5,
+    "benchmark": "hammer-db",
+    "benchmark_score": 75,
+    "template": "docker-compose.png"
+  },
+  {
+    "_id": 13,
+    "cloud": "msft.png",
+    "xpu": "tpu",
+    "region": "europe-milan",
+    "instance": "i3.small",
+    "cost": "$100",
+    "containers": 200,
+    "images_per_second": 5,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 500,
+    "latency": 10,
+    "benchmark": "ecommerce",
+    "benchmark_score": 100,
+    "template": "ansible.png"
+  },
+  {
+    "_id": 14,
+    "cloud": "vultr.png",
+    "xpu": "cpu",
+    "region": "us-west-1",
+    "instance": "m3.xlarge",
+    "cost": "$5",
+    "containers": 500,
+    "images_per_second": 500,
+    "storage": "do-blob",
+    "simultaneous_connections": 1,
+    "latency": 100,
+    "benchmark": "spec-cloud",
+    "benchmark_score": 500,
+    "template": "terraform.png"
+  },
+  {
+    "_id": 15,
+    "cloud": "goog.png",
+    "xpu": "cpu",
+    "region": "apac-sydney",
+    "instance": "a1.xlarge",
+    "cost": "$5",
+    "containers": 15,
+    "images_per_second": 1,
+    "storage": "aws-s3",
+    "simultaneous_connections": 50,
+    "latency": 500,
+    "benchmark": "ecommerce",
+    "benchmark_score": 30,
+    "template": "vagrant.png"
+  },
+  {
+    "_id": 16,
+    "cloud": "packet.png",
+    "xpu": "cpu",
+    "region": "us-east-2",
+    "instance": "cg1.xlarge",
+    "cost": "$10",
+    "containers": 20,
+    "images_per_second": 100,
+    "storage": "do-blob",
+    "simultaneous_connections": 5,
+    "latency": 500,
+    "benchmark": "hammer-db",
+    "benchmark_score": 50,
+    "template": "terraform.png"
+  },
+  {
+    "_id": 17,
+    "cloud": "goog.png",
+    "xpu": "qpu",
+    "region": "us-west-1",
+    "instance": "a1.xlarge",
+    "cost": "$5",
+    "containers": 200,
+    "images_per_second": 100,
+    "storage": "do-blob",
+    "simultaneous_connections": 500,
+    "latency": 10,
+    "benchmark": "tensorflow",
+    "benchmark_score": 75,
+    "template": "terraform.png"
+  },
+  {
+    "_id": 18,
+    "cloud": "msft.png",
+    "xpu": "gpu",
+    "region": "us-west-1",
+    "instance": "m3.xlarge",
+    "cost": "$1",
+    "containers": 500,
+    "images_per_second": 5,
+    "storage": "vultr-blob",
+    "simultaneous_connections": 500,
+    "latency": 50,
+    "benchmark": "mlbench",
+    "benchmark_score": 50,
+    "template": "helm.png"
+  },
+  {
+    "_id": 19,
+    "cloud": "vultr.png",
+    "xpu": "cpu",
+    "region": "europe-milan",
+    "instance": "p3.16xlarge",
+    "cost": "$1",
+    "containers": 15,
+    "images_per_second": 1,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 500,
+    "latency": 1,
+    "benchmark": "spec-cloud",
+    "benchmark_score": 500,
+    "template": "docker-compose.png"
+  },
+  {
+    "_id": 20,
+    "cloud": "msft.png",
+    "xpu": "tpu",
+    "region": "us-west-1",
+    "instance": "m3.xlarge",
+    "cost": "$50",
+    "containers": 15,
+    "images_per_second": 10,
+    "storage": "vultr-blob",
+    "simultaneous_connections": 10,
+    "latency": 10,
+    "benchmark": "ecommerce",
+    "benchmark_score": 1,
+    "template": "ansible.png"
+  },
+  {
+    "_id": 21,
+    "cloud": "aws.png",
+    "xpu": "gpu",
+    "region": "apac-sydney",
+    "instance": "cg1.xlarge",
+    "cost": "$5",
+    "containers": 200,
+    "images_per_second": 5,
+    "storage": "do-blob",
+    "simultaneous_connections": 500,
+    "latency": 1,
+    "benchmark": "ecommerce",
+    "benchmark_score": 75,
+    "template": "helm.png"
+  },
+  {
+    "_id": 22,
+    "cloud": "packet.png",
+    "xpu": "tpu",
+    "region": "us-east-2",
+    "instance": "a1.xlarge",
+    "cost": "$100",
+    "containers": 15,
+    "images_per_second": 10,
+    "storage": "vultr-blob",
+    "simultaneous_connections": 5,
+    "latency": 50,
+    "benchmark": "aibench",
+    "benchmark_score": 100,
+    "template": "docker-compose.png"
+  },
+  {
+    "_id": 23,
+    "cloud": "aws.png",
+    "xpu": "qpu",
+    "region": "europe-milan",
+    "instance": "m3.xlarge",
+    "cost": "$500",
+    "containers": 500,
+    "images_per_second": 100,
+    "storage": "aws-s3",
+    "simultaneous_connections": 10,
+    "latency": 5,
+    "benchmark": "spec-cloud",
+    "benchmark_score": 50,
+    "template": "vagrant.png"
+  },
+  {
+    "_id": 24,
+    "cloud": "vultr.png",
+    "xpu": "gpu",
+    "region": "europe-london",
+    "instance": "p3.16xlarge",
+    "cost": "$100",
+    "containers": 20,
+    "images_per_second": 5,
+    "storage": "vultr-blob",
+    "simultaneous_connections": 50,
+    "latency": 100,
+    "benchmark": "ecommerce",
+    "benchmark_score": 100,
+    "template": "terraform.png"
+  },
+  {
+    "_id": 25,
+    "cloud": "do.png",
+    "xpu": "cpu",
+    "region": "apac-singapore",
+    "instance": "cg1.xlarge",
+    "cost": "$500",
+    "containers": 15,
+    "images_per_second": 5,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 500,
+    "latency": 100,
+    "benchmark": "mlbench",
+    "benchmark_score": 75,
+    "template": "helm.png"
+  },
+  {
+    "_id": 26,
+    "cloud": "msft.png",
+    "xpu": "cpu",
+    "region": "europe-london",
+    "instance": "i3.small",
+    "cost": "$10",
+    "containers": 500,
+    "images_per_second": 500,
+    "storage": "aws-s3",
+    "simultaneous_connections": 50,
+    "latency": 500,
+    "benchmark": "aibench",
+    "benchmark_score": 10,
+    "template": "ansible.png"
+  },
+  {
+    "_id": 27,
+    "cloud": "aws.png",
+    "xpu": "cpu",
+    "region": "us-west-1",
+    "instance": "cg1.xlarge",
+    "cost": "$10",
+    "containers": 15,
+    "images_per_second": 10,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 10,
+    "latency": 100,
+    "benchmark": "iometer",
+    "benchmark_score": 75,
+    "template": "terraform.png"
+  },
+  {
+    "_id": 28,
+    "cloud": "do.png",
+    "xpu": "tpu",
+    "region": "europe-milan",
+    "instance": "a1.xlarge",
+    "cost": "$100",
+    "containers": 15,
+    "images_per_second": 500,
+    "storage": "do-blob",
+    "simultaneous_connections": 100,
+    "latency": 1,
+    "benchmark": "hammer-db",
+    "benchmark_score": 1,
+    "template": "docker-compose.png"
+  },
+  {
+    "_id": 29,
+    "cloud": "goog.png",
+    "xpu": "gpu",
+    "region": "apac-sydney",
+    "instance": "cg1.xlarge",
+    "cost": "$100",
+    "containers": 200,
+    "images_per_second": 50,
+    "storage": "aws-s3",
+    "simultaneous_connections": 5,
+    "latency": 100,
+    "benchmark": "ecommerce",
+    "benchmark_score": 100,
+    "template": "terraform.png"
+  },
+  {
+    "_id": 30,
+    "cloud": "goog.png",
+    "xpu": "cpu",
+    "region": "us-west-1",
+    "instance": "p3.16xlarge",
+    "cost": "$5",
+    "containers": 20,
+    "images_per_second": 1,
+    "storage": "aws-s3",
+    "simultaneous_connections": 1,
+    "latency": 100,
+    "benchmark": "hammer-db",
+    "benchmark_score": 50,
+    "template": "ansible.png"
+  },
+  {
+    "_id": 31,
+    "cloud": "do.png",
+    "xpu": "cpu",
+    "region": "europe-london",
+    "instance": "p3.16xlarge",
+    "cost": "$10",
+    "containers": 500,
+    "images_per_second": 50,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 10,
+    "latency": 1,
+    "benchmark": "spec-cloud",
+    "benchmark_score": 10,
+    "template": "terraform.png"
+  },
+  {
+    "_id": 32,
+    "cloud": "vultr.png",
+    "xpu": "gpu",
+    "region": "apac-sydney",
+    "instance": "p3.16xlarge",
+    "cost": "$1",
+    "containers": 20,
+    "images_per_second": 5,
+    "storage": "vultr-blob",
+    "simultaneous_connections": 1,
+    "latency": 1,
+    "benchmark": "ecommerce",
+    "benchmark_score": 30,
+    "template": "helm.png"
+  },
+  {
+    "_id": 33,
+    "cloud": "do.png",
+    "xpu": "cpu",
+    "region": "europe-milan",
+    "instance": "a1.xlarge",
+    "cost": "$5",
+    "containers": 200,
+    "images_per_second": 5,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 10,
+    "latency": 10,
+    "benchmark": "tensorflow",
+    "benchmark_score": 1,
+    "template": "docker-compose.png"
+  },
+  {
+    "_id": 34,
+    "cloud": "msft.png",
+    "xpu": "cpu",
+    "region": "apac-singapore",
+    "instance": "a1.xlarge",
+    "cost": "$10",
+    "containers": 500,
+    "images_per_second": 1,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 5,
+    "latency": 50,
+    "benchmark": "aibench",
+    "benchmark_score": 500,
+    "template": "helm.png"
+  },
+  {
+    "_id": 35,
+    "cloud": "do.png",
+    "xpu": "cpu",
+    "region": "apac-sydney",
+    "instance": "p3.16xlarge",
+    "cost": "$100",
+    "containers": 500,
+    "images_per_second": 500,
+    "storage": "aws-s3",
+    "simultaneous_connections": 10,
+    "latency": 1,
+    "benchmark": "aibench",
+    "benchmark_score": 1,
+    "template": "helm.png"
+  },
+  {
+    "_id": 36,
+    "cloud": "do.png",
+    "xpu": "tpu",
+    "region": "europe-london",
+    "instance": "p3.16xlarge",
+    "cost": "$5",
+    "containers": 20,
+    "images_per_second": 500,
+    "storage": "aws-s3",
+    "simultaneous_connections": 1,
+    "latency": 10,
+    "benchmark": "hammer-db",
+    "benchmark_score": 30,
+    "template": "ansible.png"
+  },
+  {
+    "_id": 37,
+    "cloud": "aws.png",
+    "xpu": "gpu",
+    "region": "europe-milan",
+    "instance": "p3.16xlarge",
+    "cost": "$500",
+    "containers": 500,
+    "images_per_second": 5,
+    "storage": "do-blob",
+    "simultaneous_connections": 500,
+    "latency": 10,
+    "benchmark": "iometer",
+    "benchmark_score": 1,
+    "template": "ansible.png"
+  },
+  {
+    "_id": 38,
+    "cloud": "goog.png",
+    "xpu": "gpu",
+    "region": "apac-singapore",
+    "instance": "p3.16xlarge",
+    "cost": "$5",
+    "containers": 500,
+    "images_per_second": 10,
+    "storage": "aws-s3",
+    "simultaneous_connections": 5,
+    "latency": 5,
+    "benchmark": "aibench",
+    "benchmark_score": 1,
+    "template": "helm.png"
+  },
+  {
+    "_id": 39,
+    "cloud": "do.png",
+    "xpu": "qpu",
+    "region": "europe-london",
+    "instance": "i3.small",
+    "cost": "$500",
+    "containers": 200,
+    "images_per_second": 5,
+    "storage": "do-blob",
+    "simultaneous_connections": 50,
+    "latency": 500,
+    "benchmark": "mlbench",
+    "benchmark_score": 100,
+    "template": "docker-compose.png"
+  },
+  {
+    "_id": 40,
+    "cloud": "goog.png",
+    "xpu": "qpu",
+    "region": "apac-sydney",
+    "instance": "cg1.xlarge",
+    "cost": "$1",
+    "containers": 500,
+    "images_per_second": 100,
+    "storage": "vultr-blob",
+    "simultaneous_connections": 100,
+    "latency": 500,
+    "benchmark": "aibench",
+    "benchmark_score": 30,
+    "template": "docker-compose.png"
+  },
+  {
+    "_id": 41,
+    "cloud": "msft.png",
+    "xpu": "gpu",
+    "region": "apac-singapore",
+    "instance": "i3.small",
+    "cost": "$1",
+    "containers": 500,
+    "images_per_second": 10,
+    "storage": "vultr-blob",
+    "simultaneous_connections": 500,
+    "latency": 50,
+    "benchmark": "hammer-db",
+    "benchmark_score": 30,
+    "template": "helm.png"
+  },
+  {
+    "_id": 42,
+    "cloud": "msft.png",
+    "xpu": "qpu",
+    "region": "europe-milan",
+    "instance": "p3.16xlarge",
+    "cost": "$1",
+    "containers": 200,
+    "images_per_second": 500,
+    "storage": "vultr-blob",
+    "simultaneous_connections": 1,
+    "latency": 1,
+    "benchmark": "iometer",
+    "benchmark_score": 75,
+    "template": "helm.png"
+  },
+  {
+    "_id": 43,
+    "cloud": "do.png",
+    "xpu": "cpu",
+    "region": "europe-london",
+    "instance": "m3.xlarge",
+    "cost": "$5",
+    "containers": 500,
+    "images_per_second": 5,
+    "storage": "aws-s3",
+    "simultaneous_connections": 100,
+    "latency": 50,
+    "benchmark": "iometer",
+    "benchmark_score": 30,
+    "template": "docker-compose.png"
+  },
+  {
+    "_id": 44,
+    "cloud": "msft.png",
+    "xpu": "gpu",
+    "region": "apac-singapore",
+    "instance": "cg1.xlarge",
+    "cost": "$500",
+    "containers": 200,
+    "images_per_second": 10,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 10,
+    "latency": 500,
+    "benchmark": "spec-cloud",
+    "benchmark_score": 10,
+    "template": "helm.png"
+  },
+  {
+    "_id": 45,
+    "cloud": "aws.png",
+    "xpu": "gpu",
+    "region": "us-east-2",
+    "instance": "p3.16xlarge",
+    "cost": "$100",
+    "containers": 500,
+    "images_per_second": 50,
+    "storage": "vultr-blob",
+    "simultaneous_connections": 500,
+    "latency": 5,
+    "benchmark": "spec-cloud",
+    "benchmark_score": 10,
+    "template": "docker-compose.png"
+  },
+  {
+    "_id": 46,
+    "cloud": "msft.png",
+    "xpu": "tpu",
+    "region": "us-west-1",
+    "instance": "m3.xlarge",
+    "cost": "$10",
+    "containers": 15,
+    "images_per_second": 500,
+    "storage": "do-blob",
+    "simultaneous_connections": 10,
+    "latency": 500,
+    "benchmark": "mlbench",
+    "benchmark_score": 100,
+    "template": "vagrant.png"
+  },
+  {
+    "_id": 47,
+    "cloud": "msft.png",
+    "xpu": "qpu",
+    "region": "us-east-2",
+    "instance": "cg1.xlarge",
+    "cost": "$10",
+    "containers": 200,
+    "images_per_second": 100,
+    "storage": "aws-s3",
+    "simultaneous_connections": 5,
+    "latency": 1,
+    "benchmark": "spec-cloud",
+    "benchmark_score": 500,
+    "template": "terraform.png"
+  },
+  {
+    "_id": 48,
+    "cloud": "vultr.png",
+    "xpu": "qpu",
+    "region": "apac-singapore",
+    "instance": "cg1.xlarge",
+    "cost": "$100",
+    "containers": 200,
+    "images_per_second": 1,
+    "storage": "aws-s3",
+    "simultaneous_connections": 1,
+    "latency": 10,
+    "benchmark": "aibench",
+    "benchmark_score": 50,
+    "template": "docker-compose.png"
+  },
+  {
+    "_id": 49,
+    "cloud": "goog.png",
+    "xpu": "cpu",
+    "region": "europe-london",
+    "instance": "i3.small",
+    "cost": "$5",
+    "containers": 15,
+    "images_per_second": 10,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 1,
+    "latency": 50,
+    "benchmark": "mlbench",
+    "benchmark_score": 30,
+    "template": "helm.png"
+  },
+  {
+    "_id": 50,
+    "cloud": "packet.png",
+    "xpu": "cpu",
+    "region": "europe-milan",
+    "instance": "i3.small",
+    "cost": "$100",
+    "containers": 500,
+    "images_per_second": 50,
+    "storage": "aws-s3",
+    "simultaneous_connections": 100,
+    "latency": 1,
+    "benchmark": "spec-cloud",
+    "benchmark_score": 30,
+    "template": "ansible.png"
+  },
+  {
+    "_id": 51,
+    "cloud": "msft.png",
+    "xpu": "cpu",
+    "region": "apac-sydney",
+    "instance": "i3.small",
+    "cost": "$500",
+    "containers": 200,
+    "images_per_second": 50,
+    "storage": "aws-s3",
+    "simultaneous_connections": 10,
+    "latency": 1,
+    "benchmark": "iometer",
+    "benchmark_score": 10,
+    "template": "vagrant.png"
+  },
+  {
+    "_id": 52,
+    "cloud": "do.png",
+    "xpu": "qpu",
+    "region": "us-west-1",
+    "instance": "m3.xlarge",
+    "cost": "$50",
+    "containers": 20,
+    "images_per_second": 100,
+    "storage": "do-blob",
+    "simultaneous_connections": 100,
+    "latency": 10,
+    "benchmark": "iometer",
+    "benchmark_score": 75,
+    "template": "ansible.png"
+  },
+  {
+    "_id": 53,
+    "cloud": "aws.png",
+    "xpu": "cpu",
+    "region": "apac-singapore",
+    "instance": "m3.xlarge",
+    "cost": "$1",
+    "containers": 15,
+    "images_per_second": 50,
+    "storage": "do-blob",
+    "simultaneous_connections": 100,
+    "latency": 5,
+    "benchmark": "ecommerce",
+    "benchmark_score": 10,
+    "template": "ansible.png"
+  },
+  {
+    "_id": 54,
+    "cloud": "vultr.png",
+    "xpu": "cpu",
+    "region": "us-east-2",
+    "instance": "i3.small",
+    "cost": "$1",
+    "containers": 500,
+    "images_per_second": 5,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 50,
+    "latency": 1,
+    "benchmark": "hammer-db",
+    "benchmark_score": 10,
+    "template": "ansible.png"
+  },
+  {
+    "_id": 55,
+    "cloud": "msft.png",
+    "xpu": "qpu",
+    "region": "europe-milan",
+    "instance": "cg1.xlarge",
+    "cost": "$1",
+    "containers": 20,
+    "images_per_second": 10,
+    "storage": "aws-s3",
+    "simultaneous_connections": 10,
+    "latency": 10,
+    "benchmark": "tensorflow",
+    "benchmark_score": 10,
+    "template": "docker-compose.png"
+  },
+  {
+    "_id": 56,
+    "cloud": "packet.png",
+    "xpu": "cpu",
+    "region": "apac-sydney",
+    "instance": "i3.small",
+    "cost": "$5",
+    "containers": 500,
+    "images_per_second": 1,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 10,
+    "latency": 500,
+    "benchmark": "hammer-db",
+    "benchmark_score": 100,
+    "template": "helm.png"
+  },
+  {
+    "_id": 57,
+    "cloud": "aws.png",
+    "xpu": "cpu",
+    "region": "us-west-1",
+    "instance": "a1.xlarge",
+    "cost": "$5",
+    "containers": 500,
+    "images_per_second": 100,
+    "storage": "vultr-blob",
+    "simultaneous_connections": 100,
+    "latency": 5,
+    "benchmark": "aibench",
+    "benchmark_score": 75,
+    "template": "docker-compose.png"
+  },
+  {
+    "_id": 58,
+    "cloud": "vultr.png",
+    "xpu": "tpu",
+    "region": "europe-milan",
+    "instance": "m3.xlarge",
+    "cost": "$5",
+    "containers": 15,
+    "images_per_second": 10,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 10,
+    "latency": 500,
+    "benchmark": "aibench",
+    "benchmark_score": 75,
+    "template": "docker-compose.png"
+  },
+  {
+    "_id": 59,
+    "cloud": "aws.png",
+    "xpu": "gpu",
+    "region": "us-east-2",
+    "instance": "m3.xlarge",
+    "cost": "$100",
+    "containers": 200,
+    "images_per_second": 1,
+    "storage": "vultr-blob",
+    "simultaneous_connections": 50,
+    "latency": 1,
+    "benchmark": "mlbench",
+    "benchmark_score": 75,
+    "template": "terraform.png"
+  },
+  {
+    "_id": 60,
+    "cloud": "vultr.png",
+    "xpu": "gpu",
+    "region": "apac-singapore",
+    "instance": "cg1.xlarge",
+    "cost": "$50",
+    "containers": 200,
+    "images_per_second": 10,
+    "storage": "vultr-blob",
+    "simultaneous_connections": 10,
+    "latency": 100,
+    "benchmark": "aibench",
+    "benchmark_score": 100,
+    "template": "ansible.png"
+  },
+  {
+    "_id": 61,
+    "cloud": "msft.png",
+    "xpu": "cpu",
+    "region": "europe-london",
+    "instance": "m3.xlarge",
+    "cost": "$1",
+    "containers": 20,
+    "images_per_second": 5,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 10,
+    "latency": 10,
+    "benchmark": "hammer-db",
+    "benchmark_score": 100,
+    "template": "ansible.png"
+  },
+  {
+    "_id": 62,
+    "cloud": "packet.png",
+    "xpu": "gpu",
+    "region": "europe-milan",
+    "instance": "a1.xlarge",
+    "cost": "$5",
+    "containers": 500,
+    "images_per_second": 50,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 5,
+    "latency": 50,
+    "benchmark": "mlbench",
+    "benchmark_score": 50,
+    "template": "terraform.png"
+  },
+  {
+    "_id": 63,
+    "cloud": "vultr.png",
+    "xpu": "cpu",
+    "region": "us-east-2",
+    "instance": "a1.xlarge",
+    "cost": "$10",
+    "containers": 200,
+    "images_per_second": 10,
+    "storage": "vultr-blob",
+    "simultaneous_connections": 5,
+    "latency": 100,
+    "benchmark": "aibench",
+    "benchmark_score": 100,
+    "template": "helm.png"
+  },
+  {
+    "_id": 64,
+    "cloud": "vultr.png",
+    "xpu": "qpu",
+    "region": "us-east-2",
+    "instance": "i3.small",
+    "cost": "$50",
+    "containers": 200,
+    "images_per_second": 50,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 50,
+    "latency": 50,
+    "benchmark": "aibench",
+    "benchmark_score": 30,
+    "template": "docker-compose.png"
+  },
+  {
+    "_id": 65,
+    "cloud": "goog.png",
+    "xpu": "cpu",
+    "region": "us-east-2",
+    "instance": "cg1.xlarge",
+    "cost": "$500",
+    "containers": 15,
+    "images_per_second": 100,
+    "storage": "do-blob",
+    "simultaneous_connections": 100,
+    "latency": 100,
+    "benchmark": "spec-cloud",
+    "benchmark_score": 10,
+    "template": "ansible.png"
+  },
+  {
+    "_id": 66,
+    "cloud": "vultr.png",
+    "xpu": "tpu",
+    "region": "apac-sydney",
+    "instance": "cg1.xlarge",
+    "cost": "$1",
+    "containers": 15,
+    "images_per_second": 50,
+    "storage": "vultr-blob",
+    "simultaneous_connections": 100,
+    "latency": 100,
+    "benchmark": "spec-cloud",
+    "benchmark_score": 500,
+    "template": "helm.png"
+  },
+  {
+    "_id": 67,
+    "cloud": "packet.png",
+    "xpu": "qpu",
+    "region": "us-east-2",
+    "instance": "i3.small",
+    "cost": "$50",
+    "containers": 500,
+    "images_per_second": 50,
+    "storage": "do-blob",
+    "simultaneous_connections": 5,
+    "latency": 1,
+    "benchmark": "aibench",
+    "benchmark_score": 100,
+    "template": "helm.png"
+  },
+  {
+    "_id": 68,
+    "cloud": "aws.png",
+    "xpu": "tpu",
+    "region": "apac-singapore",
+    "instance": "a1.xlarge",
+    "cost": "$500",
+    "containers": 200,
+    "images_per_second": 100,
+    "storage": "aws-s3",
+    "simultaneous_connections": 50,
+    "latency": 500,
+    "benchmark": "iometer",
+    "benchmark_score": 100,
+    "template": "ansible.png"
+  },
+  {
+    "_id": 69,
+    "cloud": "aws.png",
+    "xpu": "gpu",
+    "region": "europe-milan",
+    "instance": "a1.xlarge",
+    "cost": "$1",
+    "containers": 15,
+    "images_per_second": 5,
+    "storage": "vultr-blob",
+    "simultaneous_connections": 100,
+    "latency": 500,
+    "benchmark": "ecommerce",
+    "benchmark_score": 1,
+    "template": "terraform.png"
+  },
+  {
+    "_id": 70,
+    "cloud": "vultr.png",
+    "xpu": "qpu",
+    "region": "apac-singapore",
+    "instance": "a1.xlarge",
+    "cost": "$1",
+    "containers": 500,
+    "images_per_second": 50,
+    "storage": "do-blob",
+    "simultaneous_connections": 50,
+    "latency": 50,
+    "benchmark": "aibench",
+    "benchmark_score": 10,
+    "template": "helm.png"
+  },
+  {
+    "_id": 71,
+    "cloud": "goog.png",
+    "xpu": "qpu",
+    "region": "apac-singapore",
+    "instance": "cg1.xlarge",
+    "cost": "$500",
+    "containers": 500,
+    "images_per_second": 500,
+    "storage": "vultr-blob",
+    "simultaneous_connections": 100,
+    "latency": 50,
+    "benchmark": "hammer-db",
+    "benchmark_score": 30,
+    "template": "terraform.png"
+  },
+  {
+    "_id": 72,
+    "cloud": "goog.png",
+    "xpu": "qpu",
+    "region": "apac-sydney",
+    "instance": "cg1.xlarge",
+    "cost": "$500",
+    "containers": 500,
+    "images_per_second": 10,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 1,
+    "latency": 1,
+    "benchmark": "aibench",
+    "benchmark_score": 75,
+    "template": "vagrant.png"
+  },
+  {
+    "_id": 73,
+    "cloud": "aws.png",
+    "xpu": "tpu",
+    "region": "europe-london",
+    "instance": "i3.small",
+    "cost": "$100",
+    "containers": 20,
+    "images_per_second": 500,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 50,
+    "latency": 100,
+    "benchmark": "spec-cloud",
+    "benchmark_score": 75,
+    "template": "terraform.png"
+  },
+  {
+    "_id": 74,
+    "cloud": "aws.png",
+    "xpu": "tpu",
+    "region": "apac-singapore",
+    "instance": "i3.small",
+    "cost": "$1",
+    "containers": 15,
+    "images_per_second": 1,
+    "storage": "do-blob",
+    "simultaneous_connections": 500,
+    "latency": 5,
+    "benchmark": "aibench",
+    "benchmark_score": 1,
+    "template": "ansible.png"
+  },
+  {
+    "_id": 75,
+    "cloud": "packet.png",
+    "xpu": "gpu",
+    "region": "us-west-1",
+    "instance": "m3.xlarge",
+    "cost": "$500",
+    "containers": 20,
+    "images_per_second": 5,
+    "storage": "do-blob",
+    "simultaneous_connections": 100,
+    "latency": 5,
+    "benchmark": "tensorflow",
+    "benchmark_score": 50,
+    "template": "ansible.png"
+  },
+  {
+    "_id": 76,
+    "cloud": "packet.png",
+    "xpu": "gpu",
+    "region": "europe-london",
+    "instance": "a1.xlarge",
+    "cost": "$100",
+    "containers": 500,
+    "images_per_second": 10,
+    "storage": "vultr-blob",
+    "simultaneous_connections": 10,
+    "latency": 50,
+    "benchmark": "mlbench",
+    "benchmark_score": 30,
+    "template": "vagrant.png"
+  },
+  {
+    "_id": 77,
+    "cloud": "vultr.png",
+    "xpu": "tpu",
+    "region": "apac-singapore",
+    "instance": "i3.small",
+    "cost": "$50",
+    "containers": 500,
+    "images_per_second": 1,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 50,
+    "latency": 500,
+    "benchmark": "aibench",
+    "benchmark_score": 30,
+    "template": "terraform.png"
+  },
+  {
+    "_id": 78,
+    "cloud": "aws.png",
+    "xpu": "qpu",
+    "region": "europe-london",
+    "instance": "m3.xlarge",
+    "cost": "$1",
+    "containers": 200,
+    "images_per_second": 100,
+    "storage": "do-blob",
+    "simultaneous_connections": 500,
+    "latency": 50,
+    "benchmark": "mlbench",
+    "benchmark_score": 10,
+    "template": "terraform.png"
+  },
+  {
+    "_id": 79,
+    "cloud": "do.png",
+    "xpu": "gpu",
+    "region": "us-west-1",
+    "instance": "cg1.xlarge",
+    "cost": "$500",
+    "containers": 500,
+    "images_per_second": 100,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 50,
+    "latency": 50,
+    "benchmark": "tensorflow",
+    "benchmark_score": 1,
+    "template": "docker-compose.png"
+  },
+  {
+    "_id": 80,
+    "cloud": "msft.png",
+    "xpu": "qpu",
+    "region": "apac-sydney",
+    "instance": "cg1.xlarge",
+    "cost": "$500",
+    "containers": 500,
+    "images_per_second": 10,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 5,
+    "latency": 100,
+    "benchmark": "spec-cloud",
+    "benchmark_score": 500,
+    "template": "helm.png"
+  },
+  {
+    "_id": 81,
+    "cloud": "aws.png",
+    "xpu": "cpu",
+    "region": "us-east-2",
+    "instance": "p3.16xlarge",
+    "cost": "$10",
+    "containers": 20,
+    "images_per_second": 1,
+    "storage": "vultr-blob",
+    "simultaneous_connections": 5,
+    "latency": 50,
+    "benchmark": "ecommerce",
+    "benchmark_score": 75,
+    "template": "docker-compose.png"
+  },
+  {
+    "_id": 82,
+    "cloud": "goog.png",
+    "xpu": "qpu",
+    "region": "us-west-1",
+    "instance": "i3.small",
+    "cost": "$50",
+    "containers": 15,
+    "images_per_second": 5,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 500,
+    "latency": 500,
+    "benchmark": "iometer",
+    "benchmark_score": 1,
+    "template": "vagrant.png"
+  },
+  {
+    "_id": 83,
+    "cloud": "packet.png",
+    "xpu": "cpu",
+    "region": "apac-sydney",
+    "instance": "cg1.xlarge",
+    "cost": "$10",
+    "containers": 200,
+    "images_per_second": 5,
+    "storage": "do-blob",
+    "simultaneous_connections": 500,
+    "latency": 500,
+    "benchmark": "aibench",
+    "benchmark_score": 75,
+    "template": "helm.png"
+  },
+  {
+    "_id": 84,
+    "cloud": "aws.png",
+    "xpu": "tpu",
+    "region": "apac-singapore",
+    "instance": "m3.xlarge",
+    "cost": "$500",
+    "containers": 500,
+    "images_per_second": 10,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 1,
+    "latency": 500,
+    "benchmark": "hammer-db",
+    "benchmark_score": 100,
+    "template": "helm.png"
+  },
+  {
+    "_id": 85,
+    "cloud": "do.png",
+    "xpu": "gpu",
+    "region": "europe-london",
+    "instance": "i3.small",
+    "cost": "$10",
+    "containers": 500,
+    "images_per_second": 5,
+    "storage": "do-blob",
+    "simultaneous_connections": 10,
+    "latency": 50,
+    "benchmark": "aibench",
+    "benchmark_score": 100,
+    "template": "docker-compose.png"
+  },
+  {
+    "_id": 86,
+    "cloud": "goog.png",
+    "xpu": "gpu",
+    "region": "apac-singapore",
+    "instance": "m3.xlarge",
+    "cost": "$5",
+    "containers": 20,
+    "images_per_second": 100,
+    "storage": "vultr-blob",
+    "simultaneous_connections": 500,
+    "latency": 10,
+    "benchmark": "spec-cloud",
+    "benchmark_score": 50,
+    "template": "terraform.png"
+  },
+  {
+    "_id": 87,
+    "cloud": "goog.png",
+    "xpu": "tpu",
+    "region": "europe-london",
+    "instance": "a1.xlarge",
+    "cost": "$100",
+    "containers": 200,
+    "images_per_second": 500,
+    "storage": "vultr-blob",
+    "simultaneous_connections": 100,
+    "latency": 5,
+    "benchmark": "aibench",
+    "benchmark_score": 100,
+    "template": "vagrant.png"
+  },
+  {
+    "_id": 88,
+    "cloud": "aws.png",
+    "xpu": "cpu",
+    "region": "us-east-2",
+    "instance": "m3.xlarge",
+    "cost": "$500",
+    "containers": 15,
+    "images_per_second": 100,
+    "storage": "vultr-blob",
+    "simultaneous_connections": 100,
+    "latency": 100,
+    "benchmark": "ecommerce",
+    "benchmark_score": 10,
+    "template": "docker-compose.png"
+  },
+  {
+    "_id": 89,
+    "cloud": "msft.png",
+    "xpu": "cpu",
+    "region": "europe-milan",
+    "instance": "m3.xlarge",
+    "cost": "$50",
+    "containers": 500,
+    "images_per_second": 5,
+    "storage": "vultr-blob",
+    "simultaneous_connections": 500,
+    "latency": 10,
+    "benchmark": "ecommerce",
+    "benchmark_score": 10,
+    "template": "ansible.png"
+  },
+  {
+    "_id": 90,
+    "cloud": "goog.png",
+    "xpu": "cpu",
+    "region": "apac-sydney",
+    "instance": "a1.xlarge",
+    "cost": "$50",
+    "containers": 500,
+    "images_per_second": 10,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 50,
+    "latency": 5,
+    "benchmark": "tensorflow",
+    "benchmark_score": 10,
+    "template": "ansible.png"
+  },
+  {
+    "_id": 91,
+    "cloud": "packet.png",
+    "xpu": "qpu",
+    "region": "europe-london",
+    "instance": "p3.16xlarge",
+    "cost": "$100",
+    "containers": 200,
+    "images_per_second": 500,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 100,
+    "latency": 10,
+    "benchmark": "aibench",
+    "benchmark_score": 1,
+    "template": "terraform.png"
+  },
+  {
+    "_id": 92,
+    "cloud": "do.png",
+    "xpu": "qpu",
+    "region": "europe-london",
+    "instance": "i3.small",
+    "cost": "$1",
+    "containers": 20,
+    "images_per_second": 10,
+    "storage": "vultr-blob",
+    "simultaneous_connections": 5,
+    "latency": 50,
+    "benchmark": "mlbench",
+    "benchmark_score": 50,
+    "template": "vagrant.png"
+  },
+  {
+    "_id": 93,
+    "cloud": "do.png",
+    "xpu": "gpu",
+    "region": "europe-milan",
+    "instance": "a1.xlarge",
+    "cost": "$500",
+    "containers": 500,
+    "images_per_second": 100,
+    "storage": "aws-s3",
+    "simultaneous_connections": 50,
+    "latency": 10,
+    "benchmark": "ecommerce",
+    "benchmark_score": 30,
+    "template": "vagrant.png"
+  },
+  {
+    "_id": 94,
+    "cloud": "goog.png",
+    "xpu": "tpu",
+    "region": "europe-milan",
+    "instance": "p3.16xlarge",
+    "cost": "$1",
+    "containers": 15,
+    "images_per_second": 10,
+    "storage": "aws-s3",
+    "simultaneous_connections": 10,
+    "latency": 500,
+    "benchmark": "hammer-db",
+    "benchmark_score": 30,
+    "template": "terraform.png"
+  },
+  {
+    "_id": 95,
+    "cloud": "do.png",
+    "xpu": "qpu",
+    "region": "europe-milan",
+    "instance": "i3.small",
+    "cost": "$50",
+    "containers": 20,
+    "images_per_second": 10,
+    "storage": "aws-s3",
+    "simultaneous_connections": 1,
+    "latency": 5,
+    "benchmark": "ecommerce",
+    "benchmark_score": 1,
+    "template": "ansible.png"
+  },
+  {
+    "_id": 96,
+    "cloud": "packet.png",
+    "xpu": "tpu",
+    "region": "us-east-2",
+    "instance": "cg1.xlarge",
+    "cost": "$100",
+    "containers": 500,
+    "images_per_second": 50,
+    "storage": "vultr-blob",
+    "simultaneous_connections": 1,
+    "latency": 50,
+    "benchmark": "spec-cloud",
+    "benchmark_score": 500,
+    "template": "vagrant.png"
+  },
+  {
+    "_id": 97,
+    "cloud": "msft.png",
+    "xpu": "tpu",
+    "region": "us-west-1",
+    "instance": "p3.16xlarge",
+    "cost": "$50",
+    "containers": 15,
+    "images_per_second": 1,
+    "storage": "a-blobzure",
+    "simultaneous_connections": 500,
+    "latency": 1,
+    "benchmark": "ecommerce",
+    "benchmark_score": 50,
+    "template": "docker-compose.png"
+  },
+  {
+    "_id": 98,
+    "cloud": "vultr.png",
+    "xpu": "gpu",
+    "region": "us-east-2",
+    "instance": "p3.16xlarge",
+    "cost": "$1",
+    "containers": 15,
+    "images_per_second": 5,
+    "storage": "vultr-blob",
+    "simultaneous_connections": 10,
+    "latency": 100,
+    "benchmark": "mlbench",
+    "benchmark_score": 50,
+    "template": "helm.png"
+  },
+  {
+    "_id": 99,
+    "cloud": "do.png",
+    "xpu": "cpu",
+    "region": "us-east-2",
+    "instance": "i3.small",
+    "cost": "$50",
+    "containers": 15,
+    "images_per_second": 5,
+    "storage": "do-blob",
+    "simultaneous_connections": 500,
+    "latency": 10,
+    "benchmark": "aibench",
+    "benchmark_score": 75,
+    "template": "helm.png"
+  }
+];
+
+        // Extract value from table header. 
+        // ('Book ID', 'Book Name', 'Category' and 'Price')
+        var col = [];
+        for (var i = 0; i < myBooks.length; i++) {
+            for (var key in myBooks[i]) {
+                if (col.indexOf(key) === -1) {
+                    col.push(key);
+                }
+            }
+        }
+
+        // Create a table.
+        var table = document.createElement("table");
+
+         table.setAttribute("id", "myTable");
+        // Create table header row using the extracted headers above.
+        var tr = table.insertRow(-1);// table row.
+        //tr.className="header";
+        for (var i = 0; i < col.length; i++) {
+            var th = document.createElement("th");      // table header.
+            th.innerHTML = col[i];
+            tr.appendChild(th);
+        }
+
+        // add json data to the table as rows.
+        for (var i = 0; i < myBooks.length; i++) {
+
+            tr = table.insertRow(-1);
+
+            for (var j = 0; j < col.length; j++) {
+                var tabCell = tr.insertCell(-1);
+                
+                tabCell.innerHTML = myBooks[i][col[j]];
+                if((j==1) || (j==13)){
+                    var img = document.createElement('img');
+                    
+                    img.src = myBooks[i][col[j]];
+                    tabCell.innerHTML=tabCell.innerHTML.replace(".png","");
+                    tabCell.appendChild(img);
+                }
+            }
+        }
+
+        // Now, add the newly created table with json data, to a container.
+        var divShowData = document.getElementById('showData');
+        divShowData.innerHTML = "";
+        divShowData.appendChild(table);
+    }
+   
+function myFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  var concat;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    if(td){
+        txtValue = td.textContent || td.innerText;
+        concat=concat+txtValue;
+    }
+      
+    //console.log(td);
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+        console.log(txtValue);
+          
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+    
+  }
+}
+tableFromJson();
+</script>
+
+</body>
+</html>
