@@ -1,0 +1,59 @@
+https://next.json-generator.com/NJuiXGdOY
+
+[
+  {
+    'repeat(100,100)':{
+      _id: '{{index()}}',
+      cloud(tags) {
+        const cloud = ['aws.png', 'goog.png', 'msft.png','do.png','packet.png','vultr.png'];
+        return cloud[tags.integer(0, cloud.length - 1)];
+      },
+      xpu(tags) {
+        const xpu = ['cpu', 'gpu', 'tpu','qpu'];
+        return xpu[tags.integer(0, xpu.length - 1)];
+      },
+      region(tags) {
+        const region = ['us-west-1', 'us-east-2', 'apac-sydney','apac-singapore','europe-london','europe-milan'];
+        return region[tags.integer(0, region.length - 1)];
+      },
+      instance(tags) {
+        const instance = ['m3.xlarge', 'p3.16xlarge', 'a1.xlarge','cg1.xlarge','i3.small'];
+        return instance[tags.integer(0, instance.length - 1)];
+      },
+      cost(tags) {
+        const cost = ['$1', '$10', '$100','$50','$5','$500'];
+        return cost[tags.integer(0, cost.length - 1)];
+      },
+      containers(tags) {
+        const xpu = ['15', '20', '200','500'];
+        return xpu[tags.integer(0, xpu.length - 1)];
+      },
+      images_per_second(tags) {
+        const images_per_second = ['1', '10', '100','50','5','500'];
+        return images_per_second[tags.integer(0, images_per_second.length - 1)];
+      },
+      storage(tags) {
+        const storage = ['aws-s3', 'a-blobzure', 'do-blob','vultr-blob'];
+        return storage[tags.integer(0, storage.length - 1)];
+      },
+      simultaneous_connections(tags) {
+        const simultaneous_connections = ['1', '10', '100','50','5','500'];
+        return simultaneous_connections[tags.integer(0, simultaneous_connections.length - 1)];
+      },
+      latency(tags) {
+        const latency = ['1', '10', '100','50','5','500'];
+        return latency[tags.integer(0, latency.length - 1)];
+      },
+      benchmark(tags) {
+        const benchmark = ['ecommerce', 'tensorflow', 'mlbench','aibench','spec-cloud','hammer-db','iometer'];
+        return benchmark[tags.integer(0, benchmark.length - 1)];
+      },
+      benchmark_score(tags) {
+        const benchmark_score = ['1', '10', '100','50','500','30','75'];
+        return benchmark_score[tags.integer(0, benchmark_score.length - 1)];
+      }
+}
+  }
+]
+
+
