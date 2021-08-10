@@ -1,0 +1,300 @@
+<html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<style type="text/css">
+    div.photo_container {
+        /*max-width: 25em;*/
+        height: auto;
+        position: relative;
+        /*margin: 1.563em auto;*/
+        display: flex;
+    }
+
+    div.photo_container a {
+        text-decoration: none;
+        color: black;
+        cursor: default;
+        font-weight: normal;
+        font-family: "Roboto", sans-serif;
+        color: white
+    }
+
+    div.photo_container a span {
+        visibility: hidden;
+        position: absolute;
+        /*left: 15em;
+        top: -2.3em;*/
+        background: #333333;
+        width: 17em;
+        border: 1px solid #404040;
+        font-size: 0.8em;
+        padding: 0.3em;
+        cursor: default;
+        line-height: 140%;
+        border-radius: 6px;
+    }
+
+    div.photo_container a:hover span {
+        visibility: visible;
+        width: 300px;
+        overflow-y: auto;
+        height: 300px;
+    }
+
+
+    li {
+        color: purple;
+    }
+
+    img {
+        float: left;
+    }
+
+    <style>table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th,
+    td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+        margin: auto;
+    }
+
+    tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    .button {
+        background-color: red;
+        /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        opacity: 0.2;
+        box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+    }
+
+</style>
+
+
+<body>
+    <!--<div class="photo_container">
+    <a href="#">
+        <img src="https://vignette.wikia.nocookie.net/youtubepoop/images/f/f7/5Pikachu.png" width="250" height="250" alt="PIKACHU">
+        <span>
+            
+            <pre width="1000" height="1000">
+            </pre>
+
+        </span>
+    </a>
+
+</div>-->
+    <form >
+        <label for="fname">Enter git repo</label>
+        <input style='width:100%' type="text" id="fname" name="fname" value="https://github.com/eshnil2000/aws-templates"><br><br>
+        
+        <input style="background-color: green; opacity:1" class="button" type="submit" value="Submit">
+    </form>
+    <div id="list">
+    </div>
+    <!--button id="upload-button" class="button" style="background-color: green; opacity:1">Try it</button-->
+</body>
+<script>
+    // Create a table.
+
+    $(document).ready(function() {
+        console.log('ready');
+        $("#upload-button").click(myFunction);
+
+        function myFunction() {
+            console.log("myfunc");
+            var x = document.createElement("INPUT");
+            x.setAttribute("type", "file");
+            document.body.appendChild(x);
+        }
+        //your code here
+        //https://raw.githubusercontent.com/awslabs/aws-cloudformation-templates/master/aws/solutions/AmazonCloudWatchAgent/ssm/centos.template
+        template = 'https://raw.githubusercontent.com/awslabs/aws-cloudformation-templates/master/community/services/VPC/vpc_template.json';
+        template = 'https://api.github.com/repos/eshnil2000/aws-templates/contents?ref=master';
+        var id = 0;
+
+        var x = document.createElement("TABLE");
+        x.setAttribute("id", "myTable");
+        document.body.appendChild(x);
+
+        var headerCell = document.createElement("TH");
+        var t = document.createTextNode("TEMPLATE NAME"); // Create a text node
+        headerCell.appendChild(t);
+        document.getElementById("myTable").appendChild(headerCell);
+
+
+        var headerCell = document.createElement("TH");
+        var t = document.createTextNode("TEMPLATE DETECTED"); // Create a text node
+        headerCell.appendChild(t);
+        document.getElementById("myTable").appendChild(headerCell);
+
+        var headerCell = document.createElement("TH");
+        var t = document.createTextNode("TARGET OUTPUT TEMPLATES"); // Create a text node
+        headerCell.appendChild(t);
+        document.getElementById("myTable").appendChild(headerCell);
+
+        var headerCell = document.createElement("TH");
+
+        var img = document.createElement("img");
+        //img.setAttribute("src", "aws.png");
+        img.setAttribute("src", "https://raw.githubusercontent.com/eshnil2000/cl/main/aws.png");
+
+        img.setAttribute("width", "100");
+        img.setAttribute("height", "100");
+        headerCell.appendChild(img);
+        //var t = document.createTextNode("STATUS"); // Create a text node
+        //headerCell.appendChild(t);
+
+        document.getElementById("myTable").appendChild(headerCell);
+
+        var headerCell = document.createElement("TH");
+        var t = document.createTextNode("BENCHMARKS/Load generators INSERTED"); // Create a text node
+        headerCell.appendChild(t);
+        document.getElementById("myTable").appendChild(headerCell);
+
+        
+
+        $.get(template, function(myText) {
+
+
+
+            myText.forEach(function(item, index) {
+
+                setTimeout(function() {
+
+                    $.get(item.download_url, function(result) {
+                        obj = JSON.parse(result);
+                        //console.log(obj.Description);
+
+                        //var y = document.createElement("TR");
+                        //y.setAttribute("id", "myTr" + id);
+                        //document.getElementById("myTable").appendChild(y);
+                        //var t = document.createTextNode(item.name); // Create a text node
+
+                        var div = document.createElement("div");
+
+                        var y = document.createElement("TR");
+                        y.setAttribute("id", "myTr" + id);
+                        document.getElementById("myTable").appendChild(y);
+                        var z = document.createElement("TD");
+                        var t = document.createTextNode(item.name.split('.')[0]); // Create a text node
+                        z.appendChild(t);
+                        document.getElementById("myTr" + id).appendChild(z);
+
+                        //div.appendChild(t);
+                        //$('div#list').append(div);
+
+                        var div = document.createElement("div");
+                        var ahref = document.createElement("a");
+                        var img = document.createElement("img");
+                        var span = document.createElement("span");
+                        var pre = document.createElement("pre");
+
+
+                        div.setAttribute("class", "photo_container");
+                        ahref.setAttribute("href", "#");
+                        //img.setAttribute("src", "https://vignette.wikia.nocookie.net/youtubepoop/images/f/f7/5Pikachu.png");
+                        //img.setAttribute("src", "aws.png");
+                        img.setAttribute("src", "https://raw.githubusercontent.com/eshnil2000/cl/main/aws.png");
+
+                        img.setAttribute("width", "100");
+                        img.setAttribute("height", "100");
+
+                        pre.setAttribute("id", id);
+
+                        span.appendChild(pre);
+
+                        ahref.appendChild(img);
+                        ahref.appendChild(span);
+                        div.appendChild(ahref);
+                        //var y = document.createElement("TR");
+                        //y.appendChild()
+                        //$('div#list').append(div);
+                        var z = document.createElement("TD");
+                        z.appendChild(div);
+                        document.getElementById("myTr" + id).appendChild(z);
+                        
+                        //START//
+                        var z = document.createElement("TD");
+
+                       
+                        var values = ["locust: mongodb+nginx", "wrk2:mysql+compression", "perfkit:hammerdb", "locust:nginx"];
+                        valueToUse = values[Math.floor(Math.random() * values.length)];
+                        var t = document.createTextNode(valueToUse); // Create a text node
+                        z.appendChild(t);
+                        var values = [2000, 4000, 6000, 8000, 10000];
+
+                        valueToUse = values[Math.floor(Math.random() * values.length)];
+
+                        function detectBenchmark(z, id, valueToUse) {
+                            document.getElementById("myTr" + id).appendChild(z);
+                        };
+
+                        setTimeout(detectBenchmark, valueToUse, z, id, valueToUse);
+                        //END// 
+
+                        
+                        
+
+
+                        //document.getElementById("myTr" + id).appendChild(z);
+
+                        var z = document.createElement("TD");
+                        var values = ["ansible,cloudformation", "cloudformation,helm", "Terraform,cloudformation", "docker-compose"];
+                        valueToUse = values[Math.floor(Math.random() * values.length)];
+                        var t = document.createTextNode(valueToUse); // Create a text node
+                        z.appendChild(t);
+                        document.getElementById("myTr" + id).appendChild(z);
+
+                        var z = document.createElement("button");
+                        var values = ["Launch Benchmark", "Download BMDL", "Customize Benchmark Visual UI","Instance Advisor Report", "Similar Deployments"];
+                        valueToUse = values[Math.floor(Math.random() * values.length)];
+                        var t = document.createTextNode(valueToUse); // Create a text node
+                        z.appendChild(t);
+                        document.getElementById("myTr" + id).appendChild(z);
+                        z.setAttribute("class", "button");
+                        z.setAttribute("onclick", "window.location='drag-drop/dom.html'");
+
+
+                        str = 'pre#' + id;
+
+                        $(str).text(JSON.parse(JSON.stringify(result, null, 2)), null, 2);
+                        var values = [2000, 4000, 6000, 8000, 10000];
+
+                        valueToUse = values[Math.floor(Math.random() * values.length)];
+                        setTimeout(function() {
+                            z.setAttribute("style", "background-color: green;opacity: 0.8;");
+                        }, valueToUse);
+
+                        id = id + 1;
+                    })
+
+                    //$('#showData span pre').text(JSON.stringify(JSON.parse(JSON.stringify(myText, null, 2)), null, 2));
+                    //console.log(item);
+
+                }, 1000 * index);
+            })
+
+
+
+            //setTimeout(poll, 5000);
+        });
+
+    });
+
+</script>
+
+</html>
